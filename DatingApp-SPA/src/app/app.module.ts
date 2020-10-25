@@ -9,6 +9,8 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 
+import { AuthGuard } from './_guards/auth.guard';
+import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
@@ -64,10 +66,12 @@ export function tokenGetter() {
   providers: [
     AuthService,
     AlertifyService,
+    AuthGuard,
+    PreventUnsavedChanges,
     ErrorInterceptorProvider,
     MemberDetailResolver,
     MemberListResolver,
-    MemberEditResolver
+    MemberEditResolver,
   ],
   bootstrap: [AppComponent],
 })
