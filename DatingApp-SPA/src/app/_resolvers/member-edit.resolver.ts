@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { User } from '../_models/user';
 import { AlertifyService } from '../_services/alertify.service';
+import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
 
 @Injectable()
-export class MemberDetailResolver implements Resolve<User> {
+export class MemberEditResolver implements Resolve<User> {
   constructor(
     private userService: UserService,
+    private authService: AuthService,
     private router: Router,
     private alertify: AlertifyService
   ) {}
@@ -24,10 +21,10 @@ export class MemberDetailResolver implements Resolve<User> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<User> {
-    return this.userService.getUser(route.params.id).pipe(
+    return this.userService.getUser(this.authService.decodedToken.nameid).pipe(
       catchError(() => {
         this.alertify.error('Problem retrieving data');
-        this.router.navigate(['/members']);
+        this.router.navigate(['/member/edit']);
 
         return of(null);
       })
