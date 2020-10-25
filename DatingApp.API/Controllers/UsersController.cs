@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Data;
@@ -13,34 +15,44 @@ namespace DatingApp.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IDatingRepository _datingRepo;
+        private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
-        public UsersController(IDatingRepository datingRepo, IMapper mapper)
+        public UsersController(IUserRepository userRepo, IMapper mapper)
         {
             _mapper = mapper;
-            _datingRepo = datingRepo;
+            _userRepo = userRepo;
 
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users = await _datingRepo.GetUsers();
+            var users = await _userRepo.GetMembers();
 
-            var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
-
-            return Ok(usersToReturn);
+            return Ok(users);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            var user = await _datingRepo.GetUser(id);
-
-            var userToReturn = _mapper.Map<UserForDetailDto>(user);
-
-            return Ok(userToReturn);
+            return await _userRepo.GetMember(username);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepo.GetUserByUsername(username);
+            _mapper.Map(memberUpdateDto, user);
+
+            _userRepo.Update(user);
+
+            if (await _userRepo.SaveAll())
+                return NoContent();
+
+            return BadRequest($"Updating user failed on save");
+        }
+
 
     }
 }
