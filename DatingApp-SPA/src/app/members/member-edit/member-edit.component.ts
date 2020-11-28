@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'src/app/_models/user';
+import { Member } from 'src/app/_models/member';
 
 import { AlertifyService } from '../../_services/alertify.service';
 import { UserService } from '../../_services/user.service';
@@ -13,7 +13,7 @@ import { UserService } from '../../_services/user.service';
 })
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm;
-  user: User;
+  member: Member;
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
@@ -30,15 +30,15 @@ export class MemberEditComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
-      this.user = data.user;
+      this.member = data.user;
     });
   }
 
   updateUser() {
-    this.userService.updateUser(this.user).subscribe(
+    this.userService.updateUser(this.member).subscribe(
       (next) => {
         this.alertify.success('Profile updated succesfully');
-        this.editForm.reset(this.user);
+        this.editForm.reset(this.member);
       },
       (error) => {
         this.alertify.error(error);

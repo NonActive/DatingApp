@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { User } from '../../_models/user';
+import { Member } from '../../_models/member';
 import { AlertifyService } from '../../_services/alertify.service';
 import { UserService } from '../../_services/user.service';
 
@@ -11,7 +11,7 @@ import { UserService } from '../../_services/user.service';
   styleUrls: ['./member-list.component.css'],
 })
 export class MemberListComponent implements OnInit {
-  users: User[];
+  members: Member[];
 
   constructor(
     private userService: UserService,
@@ -21,7 +21,7 @@ export class MemberListComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe(data => {
-      this.users = data.users;
+      this.members = data.users;
     });
     ;
   }

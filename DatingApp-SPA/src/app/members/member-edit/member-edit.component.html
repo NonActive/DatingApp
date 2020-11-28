@@ -12,23 +12,23 @@
   <div class="row">
     <div class="col-sm-4">
       <div class="card">
-        <img class="card-img-top img-thumbnail" src="{{user.photoUrl}}" alt="{{user?.knownAs}}">
+        <img class="card-img-top img-thumbnail" src="{{member.photoUrl}}" alt="{{member?.knownAs}}">
         <div class="card-body">
           <div>
             <strong>Location:</strong>
-            <p>{{user.city}}, {{user?.country}}</p>
+            <p>{{member.city}}, {{member?.country}}</p>
           </div>
           <div>
             <strong>Age:</strong>
-            <p>{{user.age}}</p>
+            <p>{{member.age}}</p>
           </div>
           <div>
             <strong>Last Active:</strong>
-            <p>{{user.lastActive}}</p>
+            <p>{{member.lastActive}}</p>
           </div>
           <div>
             <strong>Member since:</strong>
-            <p>{{user.created}}</p>
+            <p>{{member.created}}</p>
           </div>
         </div>
         <div class="card-footer">
@@ -42,16 +42,16 @@
           <tab heading="Edit Profile">
             <form #editForm="ngForm" id="editForm" (ngSubmit)="updateUser()">
               <h4>Description</h4>
-              <textarea name="introduction" rows="6" class="form-control" [(ngModel)]="user.introduction"></textarea>
+              <textarea name="introduction" rows="6" class="form-control" [(ngModel)]="member.introduction"></textarea>
               <h4>Looking For</h4>
-              <textarea name="lookingFor" rows="6" class="form-control" [(ngModel)]="user.lookingFor"></textarea>
+              <textarea name="lookingFor" rows="6" class="form-control" [(ngModel)]="member.lookingFor"></textarea>
               <h4>Interests</h4>
-              <textarea name="interests" rows="6" class="form-control" [(ngModel)]="user.interests"></textarea>
+              <textarea name="interests" rows="6" class="form-control" [(ngModel)]="member.interests"></textarea>
               <div class="form-inline">
                 <label for="city">City</label>
-                <input type="text" name="city" class="form-control" [(ngModel)]="user.city">
+                <input type="text" name="city" class="form-control" [(ngModel)]="member.city">
                 <label for="country">Country</label>
-                <input type="text" name="country" class="form-control" [(ngModel)]="user.country">
+                <input type="text" name="country" class="form-control" [(ngModel)]="member.country">
               </div>
             </form>
           </tab>

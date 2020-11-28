@@ -28,9 +28,11 @@ import { MessagesComponent } from './messages/messages.component';
 import { NavComponent } from './nav/nav.component';
 import { RegisterComponent } from './register/register.component';
 import { appRoutes } from './routes';
+import { User } from './_models/user';
 
 export function tokenGetter() {
-  return localStorage.getItem('token');
+  const user: User = JSON.parse(localStorage.getItem('user'));
+  return user?.token;
 }
 
 @NgModule({

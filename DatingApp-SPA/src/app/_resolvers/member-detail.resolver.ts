@@ -8,12 +8,12 @@ import {
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { User } from '../_models/user';
+import { Member } from '../_models/member';
 import { AlertifyService } from '../_services/alertify.service';
 import { UserService } from '../_services/user.service';
 
 @Injectable()
-export class MemberDetailResolver implements Resolve<User> {
+export class MemberDetailResolver implements Resolve<Member> {
   constructor(
     private userService: UserService,
     private router: Router,
@@ -23,7 +23,7 @@ export class MemberDetailResolver implements Resolve<User> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<User> {
+  ): Observable<Member> {
     return this.userService.getUser(route.params.username).pipe(
       catchError(() => {
         this.alertify.error('Problem retrieving data');

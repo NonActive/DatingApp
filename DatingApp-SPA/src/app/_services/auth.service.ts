@@ -3,36 +3,58 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
+import { User } from '../_models/user';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   baseUrl = environment.apiUrl + 'auth/';
+  private currentUserSource = new ReplaySubject<User>(1);
+  currentUser$ = this.currentUserSource.asObservable();
+
   jwtHelper = new JwtHelperService();
   decodedToken: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(model: any) {
     return this.http.post(this.baseUrl + 'login', model).pipe(
-      map((response: any) => {
+      map((response: User) => {
         const user = response;
+
         if (user) {
-          localStorage.setItem('token', user.token);
-          this.decodedToken = this.jwtHelper.decodeToken(user.token);
-          console.log(this.decodedToken);
+          localStorage.setItem('user', JSON.stringify(user));
+          this.decodedToken = this.jwtHelper.decodeToken(user?.token);
+          this.setCurrentUser(user);
         }
       })
     );
   }
 
+  logout() {
+    localStorage.removeItem('user');
+    this.currentUserSource.next(null);
+  }
+
+  setCurrentUser(user: User) {
+    this.currentUserSource.next(user);
+  }
+
   register(model: any) {
-    return this.http.post(this.baseUrl + 'register', model);
+    return this.http.post(this.baseUrl + 'register', model).pipe(
+      map((user: User) => {
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+          this.setCurrentUser(user);
+        }
+      })
+    );
   }
 
   loggedIn(): boolean {
-    const token = localStorage.getItem('token');
-    return !this.jwtHelper.isTokenExpired(token);
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    return !this.jwtHelper.isTokenExpired(user?.token);
   }
 }
