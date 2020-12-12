@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
-import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class NavComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private alertify: AlertifyService,
+    private toastr: ToastrService,
     private router: Router
   ) { }
 
@@ -23,11 +23,11 @@ export class NavComponent implements OnInit {
   login() {
     this.authService.login(this.model).subscribe(
       next => {
-        this.alertify.success('Logged in successful');
+        this.toastr.success('Logged in successful');
       }, error => {
-        this.alertify.error(error);
+        this.toastr.error(error);
       }, () => {
-        this.router.navigate(['/members']);
+        this.router.navigateByUrl('/members');
       }
     );
   }
@@ -38,11 +38,7 @@ export class NavComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.alertify.info('You have been logged out');
-    this.router.navigate(['/home']);
-  }
-
-  getUsername(): string {
-    return this.authService.decodedToken?.unique_name;
+    this.toastr.info('You have been logged out');
+    this.router.navigateByUrl('/home');
   }
 }

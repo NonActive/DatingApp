@@ -1,24 +1,32 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
 import { AuthService } from '../_services/auth.service';
-import { AlertifyService } from '../_services/alertify.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   constructor(
     private authService: AuthService,
-    private alertify: AlertifyService,
+    private toastr: ToastrService,
     private router: Router
   ) {}
 
-  canActivate(): boolean {
-    if (this.authService.loggedIn()) {
-      return true;
-    }
+  canActivate(): Observable<boolean> {
+    return this.authService.currentUser$.pipe(
+      map((user) => {
 
-    this.alertify.error('Access denied');
-    this.router.navigate(['/home']);
+        if (user) {
+          return true;
+        }
+
+        this.toastr.error('Access denied');
+        // this.router.navigateByUrl('/');
+      })
+    );
   }
 }
