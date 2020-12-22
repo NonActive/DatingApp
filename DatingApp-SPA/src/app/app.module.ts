@@ -14,7 +14,7 @@ import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { AlertifyService } from './_services/alertify.service';
 import { AuthService } from './_services/auth.service';
-import { ErrorInterceptorProvider } from './_services/error.interceptor';
+import { ErrorInterceptorProvider } from './_interceptors/error.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -27,6 +27,8 @@ import { MessagesComponent } from './messages/messages.component';
 import { NavComponent } from './nav/nav.component';
 import { RegisterComponent } from './register/register.component';
 import { SharedModule } from './shared.module';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
 
 export function tokenGetter() {
   const user: User = JSON.parse(localStorage.getItem('user'));
@@ -45,6 +47,8 @@ export function tokenGetter() {
     MemberEditComponent,
     ListsComponent,
     MessagesComponent,
+    NotFoundComponent,
+    ServerErrorComponent,
   ],
   imports: [
     BrowserModule,

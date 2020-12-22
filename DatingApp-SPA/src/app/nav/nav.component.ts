@@ -7,7 +7,7 @@ import { AuthService } from '../_services/auth.service';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
   model: any = {};
@@ -16,20 +16,14 @@ export class NavComponent implements OnInit {
     public authService: AuthService,
     private toastr: ToastrService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {}
 
   login() {
-    this.authService.login(this.model).subscribe(
-      next => {
-        this.toastr.success('Logged in successful');
-      }, error => {
-        this.toastr.error(error);
-      }, () => {
-        this.router.navigateByUrl('/members');
-      }
-    );
+    this.authService.login(this.model).subscribe((response) => {
+      this.router.navigateByUrl('/members');
+    });
   }
 
   loggedIn() {
