@@ -8,7 +8,7 @@ import { Member } from '../_models/member';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class MemberService {
   baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }

@@ -3,8 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 
 import { Member } from '../../_models/member';
-import { AlertifyService } from '../../_services/alertify.service';
-import { UserService } from '../../_services/user.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -16,11 +14,7 @@ export class MemberDetailComponent implements OnInit {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(
-    private userService: UserService,
-    private alertify: AlertifyService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
@@ -34,8 +28,8 @@ export class MemberDetailComponent implements OnInit {
         imagePercent: 100,
         thumbnailsColumns: 4,
         imageAnimation: NgxGalleryAnimation.Slide,
-        preview: false
-      }
+        preview: false,
+      },
     ];
 
     this.galleryImages = this.getImages();
@@ -48,7 +42,7 @@ export class MemberDetailComponent implements OnInit {
         small: photo.url,
         medium: photo.url,
         big: photo.url,
-        description: photo.description
+        description: photo.description,
       });
     }
 
