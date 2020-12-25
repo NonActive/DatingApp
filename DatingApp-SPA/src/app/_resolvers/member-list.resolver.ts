@@ -19,7 +19,7 @@ export class MemberListResolver implements Resolve<Member[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Member[]> {
-    return this.memberService.getUsers().pipe(
+    return this.memberService.getMembers().pipe(
       catchError(() => {
         this.toastr.error('Problem retrieving data');
         this.router.navigate(['/home']);

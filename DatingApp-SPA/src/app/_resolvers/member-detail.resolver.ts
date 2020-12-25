@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Resolve,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -19,7 +24,7 @@ export class MemberDetailResolver implements Resolve<Member> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Member> {
-    return this.memberService.getUser(route.params.username).pipe(
+    return this.memberService.getMember(route.params.username).pipe(
       catchError(() => {
         this.toastr.error('Problem retrieving data');
         this.router.navigate(['/members']);

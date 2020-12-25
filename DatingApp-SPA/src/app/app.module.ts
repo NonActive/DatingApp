@@ -8,6 +8,7 @@ import { AuthGuard } from './_guards/auth.guard';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { ErrorInterceptorProvider } from './_interceptors/error.interceptor';
 import { JwtInterceptorProvider } from './_interceptors/jwt.interceptor';
+import { LoadingInterceptorProvider } from './_interceptors/loading.interceptor';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
@@ -56,6 +57,7 @@ import { SharedModule } from './shared.module';
     PreventUnsavedChanges,
     ErrorInterceptorProvider,
     JwtInterceptorProvider,
+    LoadingInterceptorProvider,
     MemberDetailResolver,
     MemberListResolver,
     MemberEditResolver,
