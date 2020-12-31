@@ -41,8 +41,7 @@ export class MemberDetailComponent implements OnInit {
       imageUrls.push({
         small: photo.url,
         medium: photo.url,
-        big: photo.url,
-        description: photo.description,
+        big: photo.url
       });
     }
 

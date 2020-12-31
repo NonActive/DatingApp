@@ -33,7 +33,6 @@ namespace DatingApp.API
             {
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-            services.AddAutoMapper(typeof(UserRepository).Assembly);
             services.AddCors();
             services.AddIdentityServices(_config);
         }

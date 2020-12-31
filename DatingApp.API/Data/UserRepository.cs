@@ -31,7 +31,9 @@ namespace DatingApp.API.Data
 
         public async Task<User> GetUserByUsername(string username)
         {
-            return await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
+            return await _context.Users
+                .Include(p => p.Photos)
+                .SingleOrDefaultAsync(user => user.Username == username);
         }
 
         public async Task<IEnumerable<User>> GetUsers()

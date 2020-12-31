@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { FileUploadModule } from 'ng2-file-upload';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -17,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
     }),
     TabsModule.forRoot(),
     NgxSpinnerModule,
+    FileUploadModule
   ],
   exports: [
     NgxGalleryModule,
@@ -24,6 +26,7 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule,
     TabsModule,
     NgxSpinnerModule,
+    FileUploadModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

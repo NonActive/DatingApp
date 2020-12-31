@@ -29,7 +29,7 @@ export class MemberService {
   }
 
   getMember(username: string): Observable<Member> {
-    const member = this.members.find((m) => (m.username = username));
+    const member = this.members.find((m) => m.username === username);
     if (member !== undefined) {
       return of(member);
     }
@@ -44,5 +44,13 @@ export class MemberService {
         this.members[index] = member;
       })
     );
+  }
+
+  setMainPhoto(photoId: number) {
+    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {});
+  }
+
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
 }

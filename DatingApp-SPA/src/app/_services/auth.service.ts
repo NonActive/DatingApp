@@ -15,7 +15,6 @@ export class AuthService {
   currentUser$ = this.currentUserSource.asObservable();
 
   jwtHelper = new JwtHelperService();
-  decodedToken: any;
 
   constructor(private http: HttpClient) { }
 
@@ -25,8 +24,6 @@ export class AuthService {
         const user = response;
 
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.decodedToken = this.jwtHelper.decodeToken(user?.token);
           this.setCurrentUser(user);
         }
       })
@@ -38,19 +35,19 @@ export class AuthService {
     this.currentUserSource.next(null);
   }
 
-  setCurrentUser(user: User) {
-    this.currentUserSource.next(user);
-  }
-
   register(model: any) {
     return this.http.post(this.baseUrl + 'register', model).pipe(
       map((user: User) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
           this.setCurrentUser(user);
         }
       })
     );
+  }
+
+  setCurrentUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSource.next(user);
   }
 
   loggedIn(): boolean {

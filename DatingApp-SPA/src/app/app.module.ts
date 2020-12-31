@@ -27,6 +27,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { NavComponent } from './nav/nav.component';
 import { RegisterComponent } from './register/register.component';
 import { SharedModule } from './shared.module';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { SharedModule } from './shared.module';
     MessagesComponent,
     NotFoundComponent,
     ServerErrorComponent,
+    PhotoEditorComponent,
   ],
   imports: [
     BrowserModule,
