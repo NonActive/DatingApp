@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
@@ -20,11 +21,13 @@ namespace DatingApp.API.Controllers
     {
         private readonly IAuthRepository _authRepository;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthRepository authRepostory, ITokenService tokenService)
+        public AuthController(IAuthRepository authRepostory, ITokenService tokenService, IMapper mapper)
         {
             _tokenService = tokenService;
             _authRepository = authRepostory;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -37,17 +40,15 @@ namespace DatingApp.API.Controllers
                 return BadRequest("Username already exists");
             }
 
-            var userToCreate = new User
-            {
-                Username = userForRegisterDto.Username
-            };
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
             var createdUser = await _authRepository.Register(userToCreate, userForRegisterDto.Password);
 
             return new UserDto
             {
                 Username = createdUser.Username,
-                Token = _tokenService.CreateToken(createdUser)
+                Token = _tokenService.CreateToken(createdUser),
+                KnownAs = createdUser.KnownAs
             };
         }
 
@@ -62,7 +63,8 @@ namespace DatingApp.API.Controllers
             {
                 Username = user.Username,
                 Token = _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain)?.Url
+                PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain)?.Url,
+                KnownAs = user.KnownAs
             };
         }
     }

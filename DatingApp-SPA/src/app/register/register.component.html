@@ -1,15 +1,32 @@
-<form #registerForm="ngForm" (ngSubmit)="register()">
+<form [formGroup]="registerForm" (ngSubmit)="register()">
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr>
 
   <div class="form-group">
-    <input type="text" class="form-control" name="username" placeholder="Username" required
-      [(ngModel)]="model.username">
+    <label class="control-label mr-2">I am a:</label>
+    <label class="radio-inline">
+      <input type="radio" value="male" formControlName="gender"> Male
+    </label>
+    <label class="radio-inline">
+      <input type="radio" value="female" formControlName="gender" class="ml-3"> Female
+    </label>
   </div>
+  <app-text-input [formControl]='registerForm.controls["username"]' [label]='"Username"'></app-text-input>
+  <app-text-input [formControl]='registerForm.controls["knownAs"]' [label]='"Known As"'></app-text-input>
+  <app-date-input [formControl]='registerForm.controls["dateOfBirth"]' [label]='"Date Of Birth"' [maxDate]="maxDate">
+  </app-date-input>
+  <app-text-input [formControl]='registerForm.controls["city"]' [label]='"City"'></app-text-input>
+  <app-text-input [formControl]='registerForm.controls["country"]' [label]='"Country"'></app-text-input>
+  <app-text-input [formControl]='registerForm.controls["password"]' [label]='"Password"' [type]='"password"'>
+  </app-text-input>
+  <app-text-input [formControl]='registerForm.controls["confirmPassword"]' [label]='"Confirm password"'
+    [type]='"password"'></app-text-input>
 
-  <div class="form-group">
-    <input type="password" class="form-control" name="password" placeholder="Password" required
-      [(ngModel)]="model.password">
+  <!-- API Validation Errors -->
+  <div class="row" *ngIf="validationErrors.length > 0">
+    <ul class="text-danger">
+      <li *ngFor="let error of validationErrors">{{error}}</li>
+    </ul>
   </div>
 
   <div class="form-group text-center">
@@ -18,3 +35,6 @@
   </div>
 
 </form>
+
+<pre>{{registerForm.value | json}}</pre>
+<pre>status {{registerForm.status}}</pre>
