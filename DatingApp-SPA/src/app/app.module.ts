@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { DateInputComponent } from './_forms/date-input/date-input.component';
+import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { ErrorInterceptorProvider } from './_interceptors/error.interceptor';
@@ -11,7 +13,6 @@ import { JwtInterceptorProvider } from './_interceptors/jwt.interceptor';
 import { LoadingInterceptorProvider } from './_interceptors/loading.interceptor';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
-import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { AuthService } from './_services/auth.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,13 +24,11 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { MessagesComponent } from './messages/messages.component';
 import { NavComponent } from './nav/nav.component';
 import { RegisterComponent } from './register/register.component';
 import { SharedModule } from './shared.module';
-import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
-import { TextInputComponent } from './_forms/text-input/text-input.component';
-import { DateInputComponent } from './_forms/date-input/date-input.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +65,6 @@ import { DateInputComponent } from './_forms/date-input/date-input.component';
     JwtInterceptorProvider,
     LoadingInterceptorProvider,
     MemberDetailResolver,
-    MemberListResolver,
     MemberEditResolver,
   ],
   bootstrap: [AppComponent],

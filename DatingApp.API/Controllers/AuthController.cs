@@ -17,7 +17,7 @@ namespace DatingApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseApiController
     {
         private readonly IAuthRepository _authRepository;
         private readonly ITokenService _tokenService;
@@ -48,7 +48,8 @@ namespace DatingApp.API.Controllers
             {
                 Username = createdUser.Username,
                 Token = _tokenService.CreateToken(createdUser),
-                KnownAs = createdUser.KnownAs
+                KnownAs = createdUser.KnownAs,
+                Gender = createdUser.Gender
             };
         }
 
@@ -64,7 +65,8 @@ namespace DatingApp.API.Controllers
                 Username = user.Username,
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain)?.Url,
-                KnownAs = user.KnownAs
+                KnownAs = user.KnownAs,
+                Gender = user.Gender
             };
         }
     }
