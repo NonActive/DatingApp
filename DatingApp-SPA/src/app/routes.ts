@@ -4,7 +4,6 @@ import { AuthGuard } from './_guards/auth.guard';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
-import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { HomeComponent } from './home/home.component';
@@ -26,9 +25,6 @@ export const appRoutes: Routes = [
       {
         path: 'members',
         component: MemberListComponent,
-        resolve: {
-          users: MemberListResolver,
-        },
       },
       {
         path: 'members/:username',
