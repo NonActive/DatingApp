@@ -5,9 +5,11 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
+import { TimeagoModule } from 'ngx-timeago';
 
 @NgModule({
   declarations: [],
@@ -23,6 +25,8 @@ import { ToastrModule } from 'ngx-toastr';
     FileUploadModule,
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
+    TimeagoModule.forRoot()
   ],
   exports: [
     NgxGalleryModule,
@@ -33,6 +37,8 @@ import { ToastrModule } from 'ngx-toastr';
     FileUploadModule,
     BsDatepickerModule,
     PaginationModule,
+    ButtonsModule,
+    TimeagoModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
