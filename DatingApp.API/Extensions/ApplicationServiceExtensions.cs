@@ -24,6 +24,7 @@ namespace DatingApp.API.Extensions
 
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ILikesRepository, LikesRepository>();
 
             return services;
         }
