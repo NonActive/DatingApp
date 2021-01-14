@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
+import { Message } from 'src/app/_models/message';
+import { MessageService } from 'src/app/_services/message.service';
 
 import { Member } from '../../_models/member';
 
@@ -10,15 +13,25 @@ import { Member } from '../../_models/member';
   styleUrls: ['./member-detail.component.css'],
 })
 export class MemberDetailComponent implements OnInit {
-  user: Member;
+  @ViewChild('memberTabs', { static: true }) memberTabs: TabsetComponent;
+  activeTab: TabDirective;
+
+  member: Member;
+  messages: Message[] = [];
+
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(private route: ActivatedRoute) {}
+
+  constructor(private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
-      this.user = data.user;
+      this.member = data.member;
+    });
+
+    this.route.queryParams.subscribe(params => {
+      params.tab ? this.selectTab(params.tab) : this.selectTab(0);
     });
 
     this.galleryOptions = [
@@ -37,7 +50,7 @@ export class MemberDetailComponent implements OnInit {
 
   getImages() {
     const imageUrls = [];
-    for (const photo of this.user.photos) {
+    for (const photo of this.member.photos) {
       imageUrls.push({
         small: photo.url,
         medium: photo.url,
@@ -46,5 +59,22 @@ export class MemberDetailComponent implements OnInit {
     }
 
     return imageUrls;
+  }
+
+  loadMessages() {
+    this.messageService.getMessageThread(this.member?.username).subscribe(response => {
+      this.messages = response;
+    })
+  }
+
+  onTabActivated(data: TabDirective) {
+    this.activeTab = data;
+    if (this.activeTab.heading === 'Messages' && this.messages.length === 0) {
+      this.loadMessages();
+    }
+  }
+
+  selectTab(tabId: number) {
+    this.memberTabs.tabs[tabId].active = true;
   }
 }
