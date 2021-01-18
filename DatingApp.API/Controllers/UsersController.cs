@@ -35,7 +35,7 @@ namespace DatingApp.API.Controllers
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
             var user = await _userRepository.GetUserByUsername(User.GetUsername());
-            userParams.CurrentUsername = user.Username;
+            userParams.CurrentUsername = user.UserName;
 
             if (string.IsNullOrEmpty(userParams.Gender))
                 userParams.Gender = user.Gender == "male" ? "female" : "male";
@@ -91,7 +91,7 @@ namespace DatingApp.API.Controllers
 
             if (await _userRepository.SaveAll())
             {
-                return CreatedAtRoute("GetUser", new { Username = user.Username }, _mapper.Map<PhotoDto>(photo));
+                return CreatedAtRoute("GetUser", new { Username = user.UserName }, _mapper.Map<PhotoDto>(photo));
             }
 
             return BadRequest("Error while adding photo");

@@ -41,9 +41,9 @@ namespace DatingApp.API.Controllers
             var message = new Message
             {
                 Sender = sender,
-                SenderUsername = sender.Username,
+                SenderUsername = sender.UserName,
                 Recipient = recipient,
-                RecipientUsername = recipient.Username,
+                RecipientUsername = recipient.UserName,
                 Content = createMessageDto.Content
             };
 

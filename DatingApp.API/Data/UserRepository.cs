@@ -35,7 +35,7 @@ namespace DatingApp.API.Data
         {
             return await _context.Users
                 .Include(p => p.Photos)
-                .SingleOrDefaultAsync(user => user.Username == username);
+                .SingleOrDefaultAsync(user => user.UserName == username);
         }
 
         public async Task<IEnumerable<User>> GetUsers()
@@ -46,7 +46,7 @@ namespace DatingApp.API.Data
         public async Task<MemberDto> GetMember(string username)
         {
             return await _context.Users
-                .Where(x => x.Username == username)
+                .Where(x => x.UserName == username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
@@ -55,7 +55,7 @@ namespace DatingApp.API.Data
         {
             var query = _context.Users.AsQueryable();
 
-            query = query.Where(u => u.Username != userParams.CurrentUsername);
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
             query = query.Where(u => u.Gender == userParams.Gender);
 
             var maxAgeDate = DateTime.Today.AddYears(-userParams.MaxAge - 1);

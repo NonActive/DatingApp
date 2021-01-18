@@ -9,7 +9,9 @@ using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
 using DatingApp.API.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,55 +21,75 @@ namespace DatingApp.API.Controllers
     [ApiController]
     public class AuthController : BaseApiController
     {
-        private readonly IAuthRepository _authRepository;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AuthController(IAuthRepository authRepostory, ITokenService tokenService, IMapper mapper)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService, IMapper mapper)
         {
+            _signInManager = signInManager;
+            _userManager = userManager;
             _tokenService = tokenService;
-            _authRepository = authRepostory;
             _mapper = mapper;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto userForRegisterDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
+            registerDto.Username = registerDto.Username.ToLower();
 
-            if (await _authRepository.UserExists(userForRegisterDto.Username))
+            if (await UserExists(registerDto.Username))
             {
                 return BadRequest("Username already exists");
             }
 
-            var userToCreate = _mapper.Map<User>(userForRegisterDto);
+            var user = _mapper.Map<User>(registerDto);
+            user.UserName = registerDto.Username.ToLower();
 
-            var createdUser = await _authRepository.Register(userToCreate, userForRegisterDto.Password);
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
             return new UserDto
             {
-                Username = createdUser.Username,
-                Token = _tokenService.CreateToken(createdUser),
-                KnownAs = createdUser.KnownAs,
-                Gender = createdUser.Gender
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user),
+                KnownAs = user.KnownAs,
+                Gender = user.Gender
             };
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto userForLoginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _authRepository.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
-            if (user == null)
-                return Unauthorized("Invalid username or password");
+            var user = await _userManager.Users
+                .Include(u => u.Photos)
+                .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+
+            if (user == null) return Unauthorized("Invalid username or password");
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            if (!result.Succeeded) return Unauthorized();
 
             return new UserDto
             {
-                Username = user.Username,
-                Token = _tokenService.CreateToken(user),
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.IsMain)?.Url,
                 KnownAs = user.KnownAs,
                 Gender = user.Gender
             };
+        }
+
+        private async Task<bool> UserExists(string username)
+        {
+            if (await _userManager.Users.AnyAsync(x => x.UserName == username))
+                return true;
+
+            return false;
         }
     }
 }
