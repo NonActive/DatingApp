@@ -19,12 +19,15 @@ export class MemberService {
   user: User;
   userParams: UserParams;
   memberCache = new Map();
+  test$: Observable<Member>;
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.authService.currentUser$.pipe(take(1)).subscribe((user) => {
       this.user = user;
       this.userParams = new UserParams(user);
     });
+
+    this.test$ = this.http.get<Member>(this.baseUrl + 'users/lisa');
   }
 
   getUserParams() {

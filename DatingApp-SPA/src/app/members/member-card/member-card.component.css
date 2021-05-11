@@ -34,3 +34,18 @@
 .animate {
   transition: all 0.25s ease-in-out;
 }
+
+@keyframes fa-blink {
+  0% {
+    opacity: 100%;
+  }
+
+  100% {
+    opacity: 40%;
+  }
+}
+
+.is-online {
+  animation: fa-blink 1.5s linear infinite;
+  color: rgb(1, 183, 42);
+}

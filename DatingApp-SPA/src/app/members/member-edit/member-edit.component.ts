@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs/operators';
 import { Member } from 'src/app/_models/member';
 
 import { MemberService } from '../../_services/member.service';
@@ -32,6 +33,10 @@ export class MemberEditComponent implements OnInit {
     this.route.data.subscribe((data) => {
       this.member = data.user;
     });
+
+    this.memberService.test$.pipe(take(1)).subscribe(member => {
+      console.log(member);
+    })
   }
 
   updateMember() {
